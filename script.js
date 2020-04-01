@@ -544,12 +544,12 @@ function saveGame() {
     let date = new Date();
     save.date = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ", " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
     ui.savedate.innerHTML = save.date;
-    localStorage.setItem('save', JSON.stringify(save));
+    localStorage.setItem('GC_save', JSON.stringify(save));
 }
 setInterval(saveGame, 60000);
 document.addEventListener("DOMContentLoaded", function () {
-    if (localStorage.getItem('save')) {
-        save = JSON.parse(localStorage.getItem('save'));
+    if (localStorage.getItem('GC_save')) {
+        save = JSON.parse(localStorage.getItem('GC_save'));
         for (let i = 0; i < save.availableUpgrades.length; i++) {
             for (let ii = 0; ii < save.availableUpgrades[i].length; ii++) {
                 if (save.availableUpgrades[i][ii]) {
@@ -637,7 +637,7 @@ function updateStats() {
 }
 
 function resetSave() {
-    localStorage.removeItem("save");
+    localStorage.removeItem("GC_save");
     location.href = "#";
     location.reload();
 }
