@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Greener Clicker</title>
+	<meta name="description" content="A short incremental game where you must turn everything green.">
+	<link rel="manifest" href="site.webmanifest">
+	<link rel="apple-touch-icon" href="icon.png">
+	<!-- Place favicon.ico in the root directory -->
+
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+	<link rel="stylesheet" href="style.css">
+	<script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
+		integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous">
+	</script>
+	<script defer src="script.js"></script>
+	<meta name="theme-color" content="#fafafa">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+</head>
+
+<body class="container">
+	<div class="columns col-gapless">
+		<!--Upgrades-->
+		<aside id="upgrades" class="column col-3">
+			<h1><i class="fas fa-tools"></i> Upgrades</h1>
+		</aside>
+		<!--Main screen, clickable money-->
+		<main class="column col-6">
+			<h1>$<span id="moneyUI">0</span>.<span id="centUI">00</span></h1>
+			<h2>$<span id="mps">0</span>.<span id="mpscent">00</span> per second</h2>
+			<div id="clicker" class="wobble">
+				<i class="fas fa-money-bill-wave fa-9x" onpointerdown="clickDown()" onpointerup="clickUp()"></i>
+			</div>
+			<nav>
+				<div>
+					<button class="btn btn-primary btn-action btn-lg navright" onclick="location.href='#credits'"><i
+							class="fas fa-info-circle"></i></button>
+					<button class="btn btn-primary btn-action btn-lg navright" onclick="location.href='#settings'"><i
+							class="fas fa-cog"></i></button>
+					<button class="btn btn-primary btn-action btn-lg" onclick="updateStats()"><i
+							class="fas fa-chart-bar"></i></button>
+				</div>
+			</nav>
+		</main>
+		<!--Buildings-->
+		<aside id="buildings" class="column col-3">
+			<h1><i class="fas fa-building"></i> Buildings</h1>
+			<div id="flowerpotbuilding" class="tile">
+				<div class="tile-icon">
+					<img src="./img/flower.svg">
+				</div>
+				<div class="tile-content">
+					<p class="tile-title">Flower Pot - $<span id="flowerpotmps">0</span>.<span
+							id="flowerpotmpscent">01</span> per second</p>
+					<p class="tile-subtitle">A flower pot to grow flowers on.</p>
+					<p>
+						<button class="btn btn-primary btn-sm" onClick="buyBuilding(0)">Buy for $<span
+								id="flowerpotprice">1</span>.<span id="flowerpotpricecent">00</span></button> Owned:
+						<span id="flowerpotowned">0</span>
+					</p>
+				</div>
+			</div>
+			<div id="pasturebuilding" class="tile hidden">
+				<div class="tile-icon">
+					<i class="fa fa-leaf"></i>
+				</div>
+				<div class="tile-content">
+					<p class="tile-title">Pasture - $<span id="pasturemps">1</span>.<span id="pasturempscent">00</span>
+						per second</p>
+					<p class="tile-subtitle">A greeny pasture that you can rent out to local farmers.</p>
+					<p>
+						<button class="btn btn-primary btn-sm" onClick="buyBuilding(1)">Buy for $<span
+								id="pastureprice">15</span>.<span id="pasturepricecent">00</span></button> Owned:
+						<span id="pastureowned">0</span>
+					</p>
+				</div>
+			</div>
+			<div id="shopbuilding" class="tile hidden">
+				<div class="tile-icon">
+					<i class="fa fa-store-alt"></i>
+				</div>
+				<div class="tile-content">
+					<p class="tile-title">Gardening Shop - $<span id="shopmps">12</span>.<span
+							id="shopmpscent">00</span> per second</p>
+					<p class="tile-subtitle">Sell gardening equipment so other people can spread the green.</p>
+					<p>
+						<button class="btn btn-primary btn-sm" onClick="buyBuilding(2)">Buy for $<span
+								id="shopprice">1500</span>.<span id="shoppricecent">00</span></button> Owned:
+						<span id="shopowned">0</span>
+					</p>
+				</div>
+			</div>
+			<div id="paintbuilding" class="tile hidden">
+				<div class="tile-icon">
+					<i class="fa fa-warehouse"></i>
+				</div>
+				<div class="tile-content">
+					<p class="tile-title">Paint Factory - $<span id="paintmps">80</span>.<span
+							id="paintmpscent">00</span> per second</p>
+					<p class="tile-subtitle">A factory that produces paint in various shades of green.</p>
+					<p>
+						<button class="btn btn-primary btn-sm" onClick="buyBuilding(3)">Buy for $<span
+								id="paintprice">15000</span>.<span id="paintpricecent">00</span></button> Owned:
+						<span id="paintowned">0</span>
+					</p>
+				</div>
+			</div>
+			<div id="corpbuilding" class="tile hidden">
+				<div class="tile-icon">
+					<i class="fa fa-hotel"></i>
+				</div>
+				<div class="tile-content">
+					<p class="tile-title">Corporation - $<span id="corpmps">600</span>.<span id="corpmpscent">00</span>
+						per second</p>
+					<p class="tile-subtitle">Use unethical business practices and "greenmail" to gain influence and
+						spread the green on global scale.</p>
+					<p>
+						<button class="btn btn-primary btn-sm" onClick="buyBuilding(4)">Buy for $<span
+								id="corpprice">200000</span>.<span id="corppricecent">00</span></button> Owned:
+						<span id="corpowned">0</span>
+					</p>
+				</div>
+			</div>
+		</aside>
+	</div>
+	<div class="modal" id="settings">
+		<a href="#" class="modal-overlay" aria-label="Close"></a>
+		<div class="modal-container">
+			<div class="modal-header">
+				<a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
+				<div class="modal-title h4">Settings</div>
+			</div>
+			<div class="modal-body">
+				<div class="content">
+					<h5>Game save</h5>
+					<button class="btn btn-primary" onclick="saveGame()">Save</button>
+					<p>Last saved: <span id="savedate">Never</span></p><br>
+					<button class="btn btn-sm btn-error" onclick="resetSave()">Reset save</button>
+					<p>No warnings! Game will reload after resetting the save.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="stats">
+		<a href="#" class="modal-overlay" aria-label="Close"></a>
+		<div class="modal-container">
+			<div class="modal-header">
+				<a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
+				<div class="modal-title h5">Statistics</div>
+			</div>
+			<div class="modal-body">
+				<div class="content">
+					<p>You spent <b>$<span id="statsspent"></span>.<span id="statsspentcent"></span></b> on buildings and upgrades.<br>
+					You earn <b>$<span id="statsclick"></span>.<span id="statsclickcent"></span></b> per click.<br>
+					You earned <b>$<span id="statsclicktotal"></span>.<span id="statsclicktotalcent"></span></b> from clicking.</p>
+					<p>Flower pots generate <b>$<span id="statsflowerpotmps"></span>.<span id="statsflowerpotmpscent"></span></b> per second.<br>
+						Pastures generate <b>$<span id="statspasturemps"></span>.<span id="statspasturempscent"></span></b> per second.<br>
+						Gardening shops generate <b>$<span id="statsshopmps"></span>.<span id="statsshopmpscent"></span></b> per second.<br>
+						Paint factories generate <b>$<span id="statspaintmps"></span>.<span id="statspaintmpscent"></span></b> per second.<br>
+						Corporations generate <b>$<span id="statscorpmps"></span>.<span id="statscorpmpscent"></span></b> per second.</p>
+						<p>You have played for <b><span id="hoursstats"></span> hours, <span id="minutesstats"></span> minutes and <span id="secondsstats"></span> seconds</b>.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="credits">
+		<a href="#" class="modal-overlay" aria-label="Close"></a>
+		<div class="modal-container">
+			<div class="modal-header">
+				<a href="#" class="btn btn-clear float-right" aria-label="Close"></a>
+				<div class="modal-title h5">Credits</div>
+			</div>
+			<div class="modal-body">
+				<div class="content">
+					<h5>Game made by kubikill</h5>
+					<h5>for <a href="https://itch.io/jam/mrquickgame-clicker-jam-2" target="_blank">Clicker Jam 2</a></h5><br>
+					<h6>Created with HTML, CSS, JavaScript and Spectre.css</h6>
+					<h6>Icons: Font Awesome, Freepik (flower pot icon)</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="win">
+		<a href="#" class="modal-overlay" aria-label="Close"></a>
+		<div class="modal-container">
+			<div class="modal-header">
+				<div class="modal-title h4">Congratulations!</div>
+			</div>
+			<div class="modal-body">
+				<div class="content">
+					<p>You won the game!</p>
+					<p>You've managed to turn everything <b>green</b> on the whole world.<br>
+					The world is most likely doomed now, but who cares?</p>
+					<p>It took you <b><span id="hoursplaytime"></span> hours, <span id="minutesplaytime"></span> minutes and <span id="secondsplaytime"></span> seconds</b> to complete this game.</p>
+					<p>Thanks for playing!</p>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+<!--<div>Flower pot made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>-->
